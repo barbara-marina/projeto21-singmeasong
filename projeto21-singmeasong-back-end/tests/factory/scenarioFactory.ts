@@ -5,7 +5,7 @@ import { prisma } from "../../src/database.js";
 import { Recommendation } from "@prisma/client";
 
 type recommendationData = Omit<Recommendation, "id" | "score">;
-const agent = supertest.agent(app);
+export const agent = supertest.agent(app);
 
 function createOneRecommendation() {
     return {
@@ -22,6 +22,7 @@ async function createRecommendation() {
 }
 
 const scenarioFactory = {
+    createOneRecommendation,
     createRecommendation
 };
 
