@@ -1,5 +1,6 @@
 import { prisma } from "../src/database.js";
-import scenarioFactory, { agent } from "./factory/scenarioFactory.js";
+import createRecommendationFactory from "./factory/createRecommendationFactory.js";
+import { agent } from "./factory/scenarioFactory.js"
 
 beforeEach(async () => {
     await prisma.recommendation.deleteMany({});
@@ -7,7 +8,7 @@ beforeEach(async () => {
 
 describe("Post recommendation", () => {
     it("given name and youtube link, should create a recommendation", async () => {
-        const recommendation = await scenarioFactory.createOneRecommendation();
+        const recommendation = await createRecommendationFactory.createRecommendationData;
 
         const response = await agent.post("/recommendations").send(recommendation);
         expect(response.statusCode).toBe(201);
@@ -16,9 +17,9 @@ describe("Post recommendation", () => {
 
 describe("Get recommendtation", () => {
     it("get recommendation, should create a recommendation", async () => {
-        scenarioFactory.createRecommendation();
-        scenarioFactory.createRecommendation();
-        scenarioFactory.createRecommendation();
+        createRecommendationFactory.createRecommendation();
+        createRecommendationFactory.createRecommendation();
+        createRecommendationFactory.createRecommendation();
 
         const response = await agent.get("/recommendations");
         expect(response.statusCode).toBe(201);
