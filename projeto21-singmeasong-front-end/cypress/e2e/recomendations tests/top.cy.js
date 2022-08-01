@@ -7,7 +7,7 @@ const upvoteAmount = 5;
 before(() => {
     cy.resetDatabase();
     cy.visit("/");
-    cy.createRecommendation("first");
+    cy.createRecommendation();
     for (let i = 0; i < upvoteAmount; i++) {
         cy.createUpvote();
     }
