@@ -18,9 +18,21 @@ async function createRecommendationAndReturnData() {
     });
 }
 
+async function createManyRecommendation(limit : number ) {
+    for (let i = 0; i < limit; i++) {
+        createRecommendationAndReturnData();
+    }
+    
+    return await prisma.recommendation.findMany({
+        skip: 0,
+        take: limit
+    });
+}
+
 const createRecommendationFactory = {
     createRecommendationData,
-    createRecommendationAndReturnData
+    createRecommendationAndReturnData, 
+    createManyRecommendation
 };
 
 export default createRecommendationFactory;
