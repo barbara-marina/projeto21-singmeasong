@@ -16,9 +16,26 @@ describe("home", () => {
 
     it("should create recommendation", () => {
         cy.visit("/");
-
-        cy.createRecommendation().then(name => {
+        cy.createRecommendation(first).then(name => {
             cy.contains(name);
+        });
+    });
+
+    it("should open a window alert when try create void recommendation", () => {
+        cy.intercept("POST", `${URL_API}/recommendations`).as("voidRecommendation");
+        cy.get("button").click();
+        cy.wait("@voidRecommendation");
+
+        cy.on("window:alert", text => {
+            expect(text).to.contains("Error creating recommendation!")
+        });
+    });
+
+    it("should open a window alert when try create same recommendation name", () => {
+        cy.createRecommendation(first).then(() => {
+            cy.on("window:alert", text => {
+                expect(text).to.contains("Error creating recommendation!")
+            });
         });
     });
 
@@ -47,11 +64,11 @@ describe("home", () => {
 
     it("should delete recommendation with score < -5", () => {
         for (let i = 0; i < 5; i++) {
-            cy.createDownvote()
+            cy.createDownvote();
         }
 
         cy.get("div:last").invoke("text").then(text => {
             cy.wrap(text).should("equal", "No recommendations yet! Create your own :)");
-        })
+        });
     });
-})
+});

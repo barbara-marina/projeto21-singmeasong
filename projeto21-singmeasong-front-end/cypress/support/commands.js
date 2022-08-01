@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+
 const URL_API = "http://localhost:5000"
 const URL = "http://localhost:3000"
 
@@ -9,11 +10,15 @@ Cypress.Commands.add("resetDatabase", () => {
 });
 
 
-Cypress.Commands.add("createRecommendation", () => {
+Cypress.Commands.add("createRecommendation", type => {
     const recommendation = {
-        name: faker.lorem.words(3),
+        name: `Halloween Special ${faker.lorem.words(1)}`,
         youtubeLink: "https://www.youtube.com/watch?v=tMgi_Wlzgew"
     };
+
+    if (type === "first") {
+        recommendation.name = "Halloween Special";
+    }
 
     cy.get("input[placeholder='Name']").type(recommendation.name);
     cy.get("input[placeholder='https://youtu.be/...']").type(recommendation.youtubeLink);
@@ -25,15 +30,15 @@ Cypress.Commands.add("createRecommendation", () => {
     return cy.wrap(recommendation.name);
 });
 
-Cypress.Commands.add("createUpvote", (id) => {
+Cypress.Commands.add("createUpvote", () => {
     cy.get("article:first").within(() => {
-        cy.get("svg:first").click().wait(2000);
+        cy.get("svg:first").click().wait(5000);
     })
 });
 
 
-Cypress.Commands.add("createDownvote", (id) => {
+Cypress.Commands.add("createDownvote", () => {
     cy.get("article:last").within(() => {
-        cy.get("svg:last").click().wait(2000);
+        cy.get("svg:last").click().wait(5000);
     })
 });
