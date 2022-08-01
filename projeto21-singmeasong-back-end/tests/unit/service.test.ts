@@ -21,7 +21,7 @@ describe("create recommendations", () => {
 
         expect(recommendationRepository.findByName).toBeCalled();
         expect(recommendationRepository.create).toBeCalled();
-    })
+    });
 
     it ("should receive repeat recommendation data and not create", async () => {
         const data = createRecommendationFactory.createRecommendationData();
@@ -30,7 +30,7 @@ describe("create recommendations", () => {
 
         const request = recommendationService.insert(data);
         expect(request).rejects.toEqual({type: "conflict", message: "Recommendations names must be unique"});
-    })
+    });
 });
 
 describe("create upvote recommendation", () => {
@@ -43,5 +43,15 @@ describe("create upvote recommendation", () => {
         await recommendationService.upvote(data.id);
 
         expect(recommendationRepository.updateScore).toHaveBeenCalled();
-    })
+    });
+
+    it ("should receive invalid recommendation and not create upvote", async () => {
+        const data = await createRecommendationFactory.createRecommendationAndReturnData();
+
+        jest.spyOn(recommendationRepository, "find").mockResolvedValueOnce(undefined);
+        
+        const request = recommendationService.upvote(undefined);
+
+        expect(request).rejects.toEqual({type: "not_found", message: ""});
+    });
 });
