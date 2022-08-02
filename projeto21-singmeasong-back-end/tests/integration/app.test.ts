@@ -42,6 +42,54 @@ describe("Post recommendation", () => {
     });
 });
 
+describe("Post upvote", () => {
+    it("given name and youtube link, should create a recommendation", async () => {
+        let recommendation: Recommendation= await createRecommendationFactory.createRecommendation();
+
+        const response = await agent.post(`/recommendations/${recommendation.id}/upvote`);
+
+        let result = await prisma.recommendation.findUnique({
+            where: {
+                id: recommendation.id
+            }
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(result.score).toBe(recommendation.score+1);
+    });
+
+    it("given name and youtube link, should create a recommendation", async () => {
+        const id = "500000";
+        const response = await agent.post(`/recommendations/${id}/upvote`);
+
+        expect(response.statusCode).toBe(404);
+    });
+});
+
+describe("Post downvote", () => {
+    it("given name and youtube link, should create a recommendation", async () => {
+        let recommendation: Recommendation= await createRecommendationFactory.createRecommendation();
+
+        const response = await agent.post(`/recommendations/${recommendation.id}/downvote`);
+
+        let result = await prisma.recommendation.findUnique({
+            where: {
+                id: recommendation.id
+            }
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(result.score).toBe(recommendation.score-1);
+    });
+
+    it("given name and youtube link, should create a recommendation", async () => {
+        const id = "500000";
+        const response = await agent.post(`/recommendations/${id}/downvote`);
+
+        expect(response.statusCode).toBe(404);
+    });
+});
+
 afterAll(async () => {
     await prisma.$disconnect();
 });
