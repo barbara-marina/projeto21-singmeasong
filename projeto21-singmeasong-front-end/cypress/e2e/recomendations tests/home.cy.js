@@ -16,7 +16,7 @@ describe("home", () => {
 
     it("should create recommendation", () => {
         cy.visit("/");
-        cy.createRecommendation(first).then(name => {
+        cy.createRecommendation("first").then(name => {
             cy.contains(name);
         });
     });
@@ -32,7 +32,7 @@ describe("home", () => {
     });
 
     it("should open a window alert when try create same recommendation name", () => {
-        cy.createRecommendation(first).then(() => {
+        cy.createRecommendation("first").then(() => {
             cy.on("window:alert", text => {
                 expect(text).to.contains("Error creating recommendation!")
             });

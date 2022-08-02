@@ -1,38 +1,30 @@
 import { faker } from "@faker-js/faker";
-import { prisma } from "../../src/database.js";
 import { Recommendation } from "@prisma/client";
 
 export type recommendationData = Omit<Recommendation, "id" | "score">;
 
-function createRecommendationData() {
+function createRecommendationData(id: number) : Recommendation {
     return {
+        id,
         name: `Halloween Special ${faker.lorem.words(1)}`,
-        youtubeLink: "https://www.youtube.com/watch?v=tMgi_Wlzgew"
-    }
-}
-async function createRecommendationAndReturnData() {
-    const recommendation: recommendationData = createRecommendationData();
-
-    return await prisma.recommendation.create({
-        data: recommendation
-    });
+        youtubeLink: "https://www.youtube.com/watch?v=tMgi_Wlzgew",
+        score: 0
+    } as Recommendation;
 }
 
-async function createManyRecommendation(limit : number ) {
-    for (let i = 0; i < limit; i++) {
-        createRecommendationAndReturnData();
+function createManyRecommendationData(limit : number ) {
+    let recommendations: Recommendation[] = [];
+
+    for (let i = 1; i <= limit; i++) {
+        recommendations.push(createRecommendationData(i));
     }
-    
-    return await prisma.recommendation.findMany({
-        skip: 0,
-        take: limit
-    });
+
+    return recommendations;
 }
 
 const createRecommendationFactory = {
     createRecommendationData,
-    createRecommendationAndReturnData, 
-    createManyRecommendation
+    createManyRecommendationData
 };
 
 export default createRecommendationFactory;
