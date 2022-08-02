@@ -1,7 +1,6 @@
 import { jest } from "@jest/globals";
-import scenarioFactory from "../factory/scenarioFactory.js";
 import { recommendationRepository } from "../../src/repositories/recommendationRepository.js";
-import createRecommendationFactory, { recommendationData } from "../factory/createRecommendationFactory.js";
+import createRecommendationFactory from "../factory/createRecommendationFactory.js";
 import { recommendationService } from "../../src/services/recommendationsService.js";
 
 beforeEach(async () => {
