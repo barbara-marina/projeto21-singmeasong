@@ -7,7 +7,7 @@ export type recommendationData = Omit<Recommendation, "id">;
 function createRecommendationData(id: number) : Recommendation {
     return {
         id,
-        name: `Halloween Special ${faker.lorem.words(1)}`,
+        name: faker.lorem.words(3),
         youtubeLink: "https://www.youtube.com/watch?v=tMgi_Wlzgew",
         score: 0
     } as Recommendation;
@@ -15,7 +15,7 @@ function createRecommendationData(id: number) : Recommendation {
 
 async function createRecommendation(){
     const recommendation : recommendationData = {
-        name: `Halloween Special ${faker.lorem.words(1)}`,
+        name: faker.lorem.words(3),
         youtubeLink: "https://www.youtube.com/watch?v=tMgi_Wlzgew",
         score: 0
     };
@@ -38,9 +38,9 @@ function createManyRecommendationData(limit : number ) {
 async function createManyRecommendation(limit : number ) {
     for (let i = 1; i <= limit; i++) {
         const recommendation : recommendationData = {
-            name: `Halloween Special ${faker.lorem.words(1)}`,
+            name: faker.lorem.words(3),
             youtubeLink: "https://www.youtube.com/watch?v=tMgi_Wlzgew",
-            score: parseInt(faker.finance.amount())
+            score: parseInt(faker.random.numeric())
         };
 
         await prisma.recommendation.create({
